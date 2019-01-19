@@ -68,5 +68,27 @@ object DarkSugar extends App {
   val lilly = new Teengirl("Lilly")
   lilly `and then said` "Scala is soo sweet!"
 
-  
+  // #5 infix types
+  class Composite[A, B]
+  val composite: Composite[Int, String] = ???
+  val composite2: Int Composite String = ???
+
+  class -->[A, B]
+  val towards: Int --> String = ???
+
+  // #6 update
+  val array = Array(1, 2, 3)
+  array(2) = 7
+
+  // #7 setters for mutable containers
+  class Mutable {
+    private var internalMember: Int = 0
+    def member = internalMember
+    def member_=(value: Int) = {
+      internalMember = value
+    }
+  }
+
+  val aMutableContainer: Mutable = new Mutable
+  aMutableContainer.member = 42
 }
