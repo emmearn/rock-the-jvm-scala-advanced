@@ -61,9 +61,9 @@ object Recap extends App {
   case class Person(name: String, age: Int)
 
   // exceptions, try catch finally expression
-  val throwsException = throw RuntimeException // nothing
+  val throwsException = throw new RuntimeException // nothing
   val aPotentialFailure = try {
-    throw RuntimeException
+    throw new RuntimeException
   } catch {
     case e: RuntimeException => "I caught an exception"
   } finally {
@@ -93,7 +93,7 @@ object Recap extends App {
   // scala collections
   // sequence arrays lists vectors maps tuples
   val aMap = Map(
-    "Daniel" -> 789
+    "Daniel" -> 789,
     "Jess" -> 555
   )
 
