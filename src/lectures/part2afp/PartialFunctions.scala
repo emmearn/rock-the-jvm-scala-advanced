@@ -46,4 +46,36 @@ object PartialFunctions extends App {
   val aTotalFunction: Int => Int = {
     case 1 => 99
   }
+
+  // HOFs accept partial functions as well
+  val aMappedList = List(1, 2, 3).map {
+    case 1 => 42
+    case 2 => 78
+    case 3 => 1000
+  }
+
+  println(aMappedList)
+
+  /*
+    Note: PFs can only have one parameter type
+  */
+
+  val aManualFussyFunction = new PartialFunction[Int, Int] {
+    override def apply(x: Int): Int = x match {
+      case 1 => 42
+      case 2 => 65
+      case 5 => 999
+    }
+
+    override def isDefinedAt(x: Int): Boolean =
+      x == 1 || x == 2 || x == 5
+  }
+
+  val chatbot: PartialFunction[String, String] = {
+    case "hello" => "Hi, my name is HAL9000"
+    case "goodbye" => "Once you start talking to me, there is no return, human!"
+    case "call mom" => "Unable to find you phone without your credit cart"
+  }
+
+  scala.io.Source.stdin.getLines().map(chatbot).foreach(println)
 }
