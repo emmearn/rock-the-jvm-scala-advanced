@@ -1,5 +1,7 @@
 package exercises
 
+import scala.annotation.tailrec
+
 trait MySet[A] extends (A => Boolean) {
   def apply(elem: A): Boolean =
     contains(elem)
@@ -71,4 +73,27 @@ class NonEmptySet[A](head: A, tail: MySet[A]) extends MySet[A] {
     f(head)
     tail foreach f
   }
+}
+
+object MySet {
+  /*
+    val s = MySet(1, 2, 3) = buildSet(seq(1, 2, 3), []) =
+    builSet(seq(2, 3), [] + 1) =
+    builSet(seq(3), [1] + 2) =
+    builSet(seq(), [1, 2] + 3) =
+    [1, 2, 3]
+   */
+  def apply[A](values: A*): MySet[A] = {
+    @tailrec
+    def buildSet(valSeq: Seq[A], acc: MySet[A]): MySet[A] =
+      if(valSeq.isEmpty) acc
+      else buildSet(valSeq.tail, acc + valSeq.head)
+
+    buildSet(values.toSeq, new EmptySet[A])
+  }
+}
+
+object MySetPlayground extends App {
+  val s = MySet(1, 2, 3, 4)
+  s + 5 ++ MySet(-1, -2) + 3 flatmap (x => MySet(x, x * 10)) filter(_ % 2 == 0) foreach println
 }
