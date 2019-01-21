@@ -44,4 +44,22 @@ object CurriesPAF extends App {
 
   val fillInTheBlanks = concatenator("Hello, ", _: String, _:String)
   println(fillInTheBlanks("Marco", " Scala is awesome!"))
+
+  def curriedFormatter(s: String)(number: Double): String = s.format(number)
+  val numbers = List(Math.PI, Math.E, 1, 9.8, 1.3e-12)
+
+  val simpleFormat = curriedFormatter("%4.2f") _ // lift
+  val seriousFormat = curriedFormatter("%8.6f") _
+  val preciseFormat = curriedFormatter("%14.12f") _
+
+  println(numbers.map(simpleFormat))
+  println(numbers.map(preciseFormat))
+
+  println(numbers.map(curriedFormatter("%8.6f"))) // compiler does sweet eta-expansions for us
+
+  def byName(n: Int) = n + 1
+  def byFunction(f: () => Int) = f() + 1
+
+  def method: Int = 42
+  def parenMethod(): Int = 42
 }
