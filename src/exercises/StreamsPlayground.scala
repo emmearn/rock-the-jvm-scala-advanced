@@ -16,10 +16,11 @@ abstract class MyStream[+A] {
   def filter(predicate: A => Boolean): MyStream[A]
 
   def take(n: Int): MyStream[A] // takes the first n elements out of this stream
+  def takeAsList(n: Int): List[A] = take(n).toList()
 
   @tailrec
   final def toList[B >: A](acc: List[B] = Nil): List[B] =
-    if(isEmpty) acc
+    if(isEmpty) acc.reverse
     else tail.toList(head :: acc)
 }
 
@@ -83,4 +84,15 @@ object StreamsPlayground extends App {
   println(startFrom0.map(_ * 2).take(100).toList())
   println(startFrom0.flatmap(x => new Cons(x, new Cons(x + 1, EmptyStream))).take(10).toList())
   println(startFrom0.filter(_ < 10).take(10).take(20).toList())
+
+  def fibonacci(first: Int, second: Int): MyStream[BigInt] =
+    new Cons(first, fibonacci(second, first + second))
+
+  println(fibonacci(1, 1).take(100).toList())
+
+  def eratosthenes(numbers: MyStream[Int]): MyStream[Int] =
+    if(numbers.isEmpty) numbers
+    else new Cons(numbers.head, eratosthenes(numbers.tail.filter(n => n % numbers.head != 0)))
+
+  println(eratosthenes(MyStream.from(2)(_ + 1)).take(100).toList())
 }
