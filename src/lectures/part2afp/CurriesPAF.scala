@@ -34,5 +34,14 @@ object CurriesPAF extends App {
 
   val add7_3 = curriedAddMethod(7) _ // Partially Apply Function
   val add7_4 = curriedAddMethod(7)(_) // alternative syntax
-  val add7_5 = simpleAddMethod(7, _ : Int) // alternative syntax 
+  val add7_5 = simpleAddMethod(7, _ : Int) // alternative syntax
+
+  // underscores are powerful
+  def concatenator(a: String, b: String, c: String) = a + b + c
+
+  val inserName = concatenator("Hello, I'm ", _ : String, ", how are you?")
+  println(inserName("Marco"))
+
+  val fillInTheBlanks = concatenator("Hello, ", _: String, _:String)
+  println(fillInTheBlanks("Marco", " Scala is awesome!"))
 }
