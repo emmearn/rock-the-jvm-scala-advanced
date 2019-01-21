@@ -57,9 +57,23 @@ object CurriesPAF extends App {
 
   println(numbers.map(curriedFormatter("%8.6f"))) // compiler does sweet eta-expansions for us
 
-  def byName(n: Int) = n + 1
+  def byName(n: => Int) = n + 1
   def byFunction(f: () => Int) = f() + 1
 
   def method: Int = 42
   def parenMethod(): Int = 42
+
+  byName(23) // ok
+  byName(method) // ok
+  byName(parenMethod()) // ok
+  byName(parenMethod) // ok but beware ==> byName(parentMethod())
+  // byName(() => 42) // not ok
+  byName((() => 42)()) // ok
+  // byName(parenMethod _) // not ok
+
+  // byFunction(45) // not ok
+  // byFunction(method) // not ok!!!! does not do ETA-expansion!
+  byFunction(parenMethod) // compiler does ETA-expansion!
+  byFunction(() => 46) // ok
+  byFunction(parenMethod _) // also works, but warning - unnecessary
 }
