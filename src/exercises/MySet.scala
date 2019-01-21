@@ -147,5 +147,13 @@ object MySetPlayground extends App {
   val s = MySet(1, 2, 3, 4)
   s + 5 ++ MySet(-1, -2) + 3 flatmap (x => MySet(x, x * 10)) filter(_ % 2 == 0) foreach println
 
-  
+  val negative = !s // s.!unary_! = all the naturals not equal to 1, 2, 3, 4
+  println(negative(2))
+  println(negative(5))
+
+  val negativeEvent = negative.filter(_ % 2 == 0)
+  println(negativeEvent(5))
+
+  val negativeEven5 = negativeEvent + 5 // all the even numbers > 4 + 5
+  println(negativeEvent(5))
 }
